@@ -2,14 +2,15 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Student;
 import com.example.demo.repository.StudentRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/tho-con-xinh-xan")
+@Controller
+@RequestMapping("/students")
 public class StudentController {
     private StudentRepository studentRepository;
 
@@ -18,7 +19,8 @@ public class StudentController {
     }
 
     @GetMapping()
-    public List<Student> getAllStudent(){
-        return studentRepository.findAll();
+    public String getAllStudent(Model model){
+        model.addAttribute("content","students/list");
+        return "layout/main";
     }
 }
