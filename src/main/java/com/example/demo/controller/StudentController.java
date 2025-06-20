@@ -20,6 +20,8 @@ public class StudentController {
 
     @GetMapping()
     public String getAllStudent(Model model){
+        List<Student> list = studentRepository.findAll();
+        model.addAttribute("students",list);
         model.addAttribute("content","students/list");
         return "layout/main";
     }
