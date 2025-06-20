@@ -4,10 +4,7 @@ import com.example.demo.entity.Student;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,28 @@ public class StudentController {
     @PostMapping("create")
     public String createStudent(@ModelAttribute Student student){
         studentRepository.save(student);
+        return "redirect:/students";
+    }
+
+    @GetMapping("edit/{id}")
+    public String editStudent(@PathVariable Long id, Model model){
+        Student s = studentRepository.findById(id)
+                .orElseThrow();
+        model.addAttribute("student",s);
+        model.addAttribute("content","students/edit_form");
+        return "layout/main";
+    }
+
+    @PostMapping("edit")
+    public String updateStudent(@ModelAttribute Student student){
+        studentRepository.save(student);
+        return "redirect:/students";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deleteStudent(@PathVariable Long id){
+        Student s = studentRepository.findById(id).orElseThrow();
+        studentRepository.delete(s);
         return "redirect:/students";
     }
 }

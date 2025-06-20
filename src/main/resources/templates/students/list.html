@@ -24,7 +24,14 @@
                     <td th:text="${s.name}"></td>
                     <td th:text="${s.age}"></td>
                     <td th:text="${s.telephone}"></td>
-                    <td></td>
+                    <td>
+                        <a th:href="@{/students/edit/{id}(id=${s.id})}" class="btn btn-primary">
+                            Edit
+                        </a>
+                        <a onclick="return confirm('Chắc chắn xoá sinh viên?')" th:href="@{/students/delete/{id}(id=${s.id})}" class="btn btn-danger">
+                            Delete
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
