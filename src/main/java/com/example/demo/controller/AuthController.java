@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,15 +44,22 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public String postLogin(@ModelAttribute User user){
+    public String postLogin(@ModelAttribute User user, HttpSession session){
         List<User> list = userRepository.findByEmail(user.getEmail());
         if(list.size() > 0){
             User existUser = list.get(0);
             // so sánh password
             if(bCryptPasswordEncoder.matches(user.getPassword(), existUser.getPassword())){
+                session.setAttribute("currentUser",existUser);
                 return "redirect:/";
             }
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session){
+        session.setAttribute("currentUser",null);
+        return "redirect:/";
     }
 }
